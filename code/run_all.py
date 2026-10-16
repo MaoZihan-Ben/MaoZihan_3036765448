@@ -655,7 +655,79 @@ def figure1(d):
 
 
 # =====================================================================
-# 12. 与论文结果自动比对
+# 12. 附加分析：置换检验 / 安慰剂（Randomization Inference）
+# =====================================================================
+def extra_permutation(d):
+    """
+    附加分析（论文原文未做，属于额外的稳健性检查）：
+    把 NJ / PA 的州标签在样本内随机重排（保持两州样本量不变），
+    每次重新估计简约式回归 d_fte ~ nj + 连锁/所有权控制变量，
+    收集 1000 个“安慰剂” NJ 系数，构成零假设（最低工资对就业无影响）
+    下的经验分布，据此给出单侧经验 p 值。
+    固定随机种子，保证任何机器上重复运行结果完全一致。
+    """
+    sep("步骤 10. 附加分析 —— 置换检验（Randomization Inference）")
+    ctrl = "bk + kfc + rr + co"
+    dd = sub(d).reset_index(drop=True)
+
+    obs = smf.ols(f"d_fte ~ nj + {ctrl}", dd).fit().params["nj"]
+
+    n_obs = len(dd)
+    n_nj = int(dd["nj"].sum())
+    rng = np.random.default_rng(19940401)   # 固定种子 -> 结果可复现
+    reps = 1000
+    coefs = np.empty(reps, dtype="float64")
+    for r in range(reps):
+        lab = np.zeros(n_obs, dtype=int)
+        lab[rng.choice(n_obs, n_nj, replace=False)] = 1
+        dd["perm_nj"] = lab
+        coefs[r] = smf.ols(f"d_fte ~ perm_nj + {ctrl}", dd).fit().params["perm_nj"]
+    dd.drop(columns=["perm_nj"], inplace=True)
+
+    lo, hi = (float(x) for x in np.percentile(coefs, [2.5, 97.5]))
+    one_sided = float((coefs >= obs).mean())
+
+    summary = dict(
+        observed_nj_coef=float(obs),
+        placebo_mean=float(coefs.mean()),
+        placebo_sd=float(coefs.std(ddof=1)),
+        placebo_pct2_5=lo,
+        placebo_pct97_5=hi,
+        one_sided_p=one_sided,
+        n_permutations=reps,
+    )
+    pd.DataFrame([summary]).to_csv(
+        OUT_TABLES / "extra_permutation_test.csv", index=False)
+    pd.DataFrame({"rep": np.arange(1, reps + 1), "nj_coef": coefs}).to_csv(
+        OUT_TABLES / "extra_permutation_draws.csv", index=False)
+
+    fig, ax = plt.subplots(figsize=(7, 4))
+    ax.hist(coefs, bins=30, color="#3b6ea5", alpha=0.75,
+            label="Placebo estimates (shuffled state labels)")
+    ax.axvline(float(obs), color="#c0504d", lw=2,
+               label=f"Observed = {obs:.3f}")
+    ax.set_xlabel("Estimated NJ dummy coefficient")
+    ax.set_ylabel("Frequency")
+    ax.set_title("Additional analysis: randomization inference (1,000 permutations)")
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig(OUT_FIGURES / "extra_permutation_test.png", dpi=150)
+    plt.close(fig)
+
+    print(f"观测 NJ 系数 (含控制变量)   : {obs:8.4f}")
+    print(f"安慰剂系数均值 (零假设下)   : {coefs.mean():8.4f}")
+    print(f"安慰剂系数标准差            : {coefs.std(ddof=1):8.4f}")
+    print(f"置换分布 2.5% / 97.5% 分位  : {lo:8.4f} / {hi:8.4f}")
+    print(f"单侧经验 p 值 (置换次数={reps}): {one_sided:8.4f}")
+    n_ge = int((coefs >= obs).sum())
+    print(f"安慰剂系数 >= 观测值的次数  : {n_ge} / {reps}")
+    print(f"输出 -> {OUT_TABLES / 'extra_permutation_test.csv'}")
+    print(f"输出 -> {OUT_FIGURES / 'extra_permutation_test.png'}")
+    return pd.DataFrame([summary])
+
+
+# =====================================================================
+# 13. 与论文结果自动比对
 # =====================================================================
 def compare():
     sep("步骤 8. 本次复现结果 vs 论文发表结果 比对")
@@ -686,7 +758,7 @@ def compare():
 
 
 # =====================================================================
-# 13. 无法复现的部分（数据不足）
+# 14. 无法复现的部分（数据不足）
 # =====================================================================
 def not_reproducible():
     sep("步骤 9. 数据不足、无法复现的论文内容")
@@ -730,12 +802,14 @@ def main():
     figure1(d)
     comp = compare()
     not_reproducible()
+    extra_permutation(d)
 
     print("\n" + "=" * 72)
     print("复现完成。输出文件：")
     for f in sorted(OUT_TABLES.glob("*.csv")):
         print("  outputs/tables/" + f.name)
-    print("  outputs/figures/figure1_wage_distribution.png")
+    for f in sorted(OUT_FIGURES.glob("*.png")):
+        print("  outputs/figures/" + f.name)
     print("  data/processed/cleaned_did.csv")
     print("=" * 72)
 

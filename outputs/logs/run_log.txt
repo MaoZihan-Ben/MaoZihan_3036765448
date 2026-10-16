@@ -1,0 +1,246 @@
+﻿仓库根目录 ROOT      : D:\MaoZihan_3036765448
+原始数据 RAW_FILE    : D:\MaoZihan_3036765448\data\raw\public.csv
+输出表格 OUT_TABLES  : D:\MaoZihan_3036765448\outputs\tables
+
+========================================================================
+步骤 0. 数据遍历（data/raw/public.csv）
+========================================================================
+原始数据规模: 410 行 x 46 列
+字段: ['SHEET', 'CHAIN', 'CO_OWNED', 'STATE', 'SOUTHJ', 'CENTRALJ', 'NORTHJ', 'PA1', 'PA2', 'SHORE', 'NCALLS', 'EMPFT', 'EMPPT', 'NMGRS', 'WAGE_ST', 'INCTIME', 'FIRSTINC', 'BONUS', 'PCTAFF', 'MEALS', 'OPEN', 'HRSOPEN', 'PSODA', 'PFRY', 'PENTREE', 'NREGS', 'NREGS11', 'TYPE2', 'STATUS2', 'DATE2', 'NCALLS2', 'EMPFT2', 'EMPPT2', 'NMGRS2', 'WAGE_ST2', 'INCTIME2', 'FIRSTIN2', 'SPECIAL2', 'MEALS2', 'OPEN2R', 'HRSOPEN2', 'PSODA2', 'PFRY2', 'PENTREE2', 'NREGS2', 'NREGS112']
+按州分布  : NJ = 331, PA = 79
+按连锁分布: {'Burger King': 171, 'Roy Rogers': 99, 'KFC': 80, "Wendy's": 60}
+第二轮状态 STATUS2: {1: 399, 3: 6, 2: 2, 4: 1, 0: 1, 5: 1}
+关键变量缺失数: {'EMPFT': 6, 'EMPPT': 4, 'NMGRS': 6, 'WAGE_ST': 20, 'EMPFT2': 12, 'EMPPT2': 10, 'NMGRS2': 6, 'WAGE_ST2': 21, 'PSODA': 8, 'PFRY': 17, 'PENTREE': 12, 'PSODA2': 22, 'PFRY2': 28, 'PENTREE2': 24}
+
+清洗完成 -> D:\MaoZihan_3036765448\data\processed\cleaned_did.csv
+论文 Table 4/5/6 回归样本 (N=357 口径): N = 357
+平衡样本 (Table 3 行4/5):            N = 384
+
+========================================================================
+步骤 1. 复现 Table 2 —— 分州均值（Stores in NJ / PA）
+========================================================================
+                             item     NJ     PA      t
+               1. Burger King (%)  41.09  44.30    NaN
+                       1. KFC (%)  20.54  15.19    NaN
+                1. Roy Rogers (%)  24.77  21.52    NaN
+                   1. Wendy's (%)  13.60  18.99    NaN
+             1. Company-owned (%)  34.14  35.44    NaN
+                1. FTE employment  20.44  23.33  -2.00
+                2. FTE employment  21.03  21.17  -0.13
+1. Percentage full-time employees  32.85  35.04  -0.72
+2. Percentage full-time employees  35.87  30.38   1.75
+                 1. Starting wage   4.61   4.63  -0.40
+                 2. Starting wage   5.08   4.62  10.82
+            1. Price of full meal   3.35   3.04   3.96
+            2. Price of full meal   3.41   3.03   5.08
+          1. Hours open (weekday)  14.42  14.53  -0.29
+          2. Hours open (weekday)  14.42  14.65  -0.65
+              1. Recruiting bonus  23.56  29.11  -0.98
+              2. Recruiting bonus  20.32  23.38  -0.57
+              1. Wage = $4.25 (%)  30.51  32.91    NaN
+              2. Wage = $4.25 (%)   0.00  25.32    NaN
+              2. Wage = $5.05 (%)  85.50   1.27    NaN
+
+========================================================================
+步骤 2. 复现 Table 3 —— 平均就业：最低工资上调前后（DID）
+========================================================================
+                  Variable  (i) PA  (ii) NJ  (iii) NJ-PA  (iv) wage=$4.25  (v) wage=$4.26-4.99  (vi) wage>=$5.00  (vii) low-high  (viii) mid-high
+  1. FTE employment before   23.33    20.44        -2.89            19.56                20.08             22.25           -2.69            -2.17
+   2. FTE employment after   21.17    21.03        -0.14            20.88                20.96             20.21            0.66             0.74
+     3. Change in mean FTE   -2.17     0.59         2.75             1.32                 0.87             -2.04            3.36             2.91
+4. Change, balanced sample   -2.28     0.47         2.75             1.20                 0.71             -2.16            3.36             2.87
+5. Change, temp-closed = 0   -2.28     0.23         2.51             0.90                 0.49             -2.39            3.29             2.88
+
+========================================================================
+步骤 3. 复现 Table 4 —— 就业变化的简约式回归模型
+========================================================================
+model     coef       se        t      ser   n
+  (i)    2.326    1.192    1.952    8.791 357
+ (ii)    2.304    1.196    1.927    8.785 357
+(iii)   15.653    6.080    2.574    8.757 357
+ (iv)   14.916    6.205    2.404    8.759 357
+  (v)   11.979    7.419    1.615    8.752 357
+被解释变量均值 = -0.238, 标准差 = 8.825
+
+========================================================================
+步骤 4. 复现 Table 5 —— 简约式就业模型的稳健性检验
+========================================================================
+                       specification    key     coef       se
+                  1. Base (NJ dummy)     nj    2.304    1.196
+                       1. Base (Gap)    gap   14.916    6.205
+       2. Temp-closed = 0 (NJ dummy)     nj    2.028    1.219
+            2. Temp-closed = 0 (Gap)    gap   14.424    6.312
+         3. Drop managers (NJ dummy)     nj    2.342    1.166
+              3. Drop managers (Gap)    gap   14.690    6.053
+           4. PT = 0.4xFT (NJ dummy)     nj    2.340    1.200
+                4. PT = 0.4xFT (Gap)    gap   15.233    6.230
+           5. PT = 0.6xFT (NJ dummy)     nj    2.268    1.207
+                5. PT = 0.6xFT (Gap)    gap   14.598    6.264
+         6. Drop NJ shore (NJ dummy)     nj    2.585    1.195
+              6. Drop NJ shore (Gap)    gap   16.885    6.367
+         8. Drop >2 calls (NJ dummy)     nj    2.419    1.286
+              8. Drop >2 calls (Gap)    gap   14.080    7.111
+         1b. Prop. change (NJ dummy)     nj    0.041    0.058
+              1b. Prop. change (Gap)    gap    0.253    0.302
+     9. Weighted by init. emp. (Gap)    gap    0.694    0.276
+9. Weighted by init. emp. (NJ dummy)     nj    0.104    0.051
+                   12. PA only (Gap) gap_pa   -0.304   22.003
+
+========================================================================
+步骤 5. 复现 Table 6 —— 最低工资对其他结果的影响
+========================================================================
+                      outcome       NJ       PA    NJ_PA  nj_dummy      gap  gap_reg
+1. Fraction full-time workers     2.65    -4.65     7.30      7.30    44.89    38.73
+    2. Hours open per weekday    -0.00     0.11    -0.11     -0.11    -0.30    -0.05
+  3. Number of cash registers    -0.04     0.13    -0.17     -0.18    -0.30     0.41
+   4. Registers open at 11 AM    -0.04    -0.22     0.18      0.18     0.12    -0.69
+    5. Low-price meal program    -4.67    -1.28    -3.39     -2.13   -22.88   -20.11
+         6. Free meal program     8.41     6.41     2.00      0.49    28.83    36.53
+      7. Combination of meals    -4.05    -5.13     1.08      1.20   -14.67   -26.53
+       8. Time to first raise     3.77     1.26     2.51      2.21     0.40   -13.23
+     9. Amount of first raise    -0.01    -0.02     0.01      0.01     0.01    -0.02
+    10. Slope of wage profile    -0.00    -0.00     0.00      0.00     0.01     0.01
+
+========================================================================
+步骤 6. 复现 Table 7 —— 最低工资对全日餐价格的影响
+========================================================================
+model     coef       se        t      ser   n
+  (i)   0.0325   0.0144   2.2571   0.1011 317
+ (ii)   0.0367   0.0140   2.6331   0.0974 317
+(iii)   0.0778   0.0748   1.0395   0.1018 317
+ (iv)   0.1470   0.0740   1.9862   0.0979 317
+  (v)   0.0659   0.0893   0.7385   0.0974 317
+被解释变量均值 = 0.0172, 标准差 = 0.1018
+
+========================================================================
+步骤 7. 复现 Figure 1 —— 两州起薪分布（前 / 后）
+========================================================================
+已保存 -> D:\MaoZihan_3036765448\outputs\figures\figure1_wage_distribution.png
+
+========================================================================
+步骤 8. 本次复现结果 vs 论文发表结果 比对
+========================================================================
+ table                                   item     mine    paper     diff status
+Table2                 1. FTE employment (NJ)   20.439   20.400    0.039     OK
+Table2                 1. FTE employment (PA)   23.331   23.300    0.031     OK
+Table2                 2. FTE employment (NJ)   21.027   21.000    0.027     OK
+Table2                 2. FTE employment (PA)   21.166   21.200   -0.034     OK
+Table2                  1. Starting wage (NJ)    4.612    4.610    0.002     OK
+Table2                  1. Starting wage (PA)    4.630    4.630    0.000     OK
+Table2                  2. Starting wage (NJ)    5.081    5.080    0.001     OK
+Table2                  2. Starting wage (PA)    4.617    4.620   -0.003     OK
+Table2             1. Price of full meal (NJ)    3.351    3.350    0.001     OK
+Table2             1. Price of full meal (PA)    3.042    3.040    0.002     OK
+Table2             2. Price of full meal (NJ)    3.415    3.410    0.005     OK
+Table2             2. Price of full meal (PA)    3.027    3.030   -0.003     OK
+Table2 1. Percentage full-time employees (NJ)   32.849   32.800    0.049     OK
+Table2 1. Percentage full-time employees (PA)   35.038   35.000    0.038     OK
+Table2 2. Percentage full-time employees (NJ)   35.866   35.900   -0.034     OK
+Table2 2. Percentage full-time employees (PA)   30.385   30.400   -0.015     OK
+Table2           1. Hours open (weekday) (NJ)   14.418   14.400    0.018     OK
+Table2           1. Hours open (weekday) (PA)   14.525   14.500    0.025     OK
+Table2           2. Hours open (weekday) (NJ)   14.420   14.400    0.020     OK
+Table2           2. Hours open (weekday) (PA)   14.654   14.700   -0.046     OK
+Table2               1. Recruiting bonus (NJ)   23.565   23.600   -0.035     OK
+Table2               1. Recruiting bonus (PA)   29.114   29.100    0.014     OK
+Table2               2. Recruiting bonus (NJ)   20.317   20.300    0.018     OK
+Table2               2. Recruiting bonus (PA)   23.377   23.400   -0.023     OK
+Table2               1. Wage = $4.25 (%) (NJ)   30.514   30.500    0.014     OK
+Table2               1. Wage = $4.25 (%) (PA)   32.911   32.900    0.011     OK
+Table2               2. Wage = $4.25 (%) (NJ)    0.000    0.000    0.000     OK
+Table2               2. Wage = $4.25 (%) (PA)   25.317   25.300    0.017     OK
+Table2               2. Wage = $5.05 (%) (NJ)   85.499   85.200    0.298     OK
+Table2               2. Wage = $5.05 (%) (PA)    1.266    1.300   -0.034     OK
+Table3                           [行1] (ii) NJ   20.439   20.440   -0.001     OK
+Table3                            [行1] (i) PA   23.331   23.330    0.001     OK
+Table3                       [行1] (iii) NJ-PA   -2.892   -2.890   -0.002     OK
+Table3                           [行2] (ii) NJ   21.027   21.030   -0.003     OK
+Table3                            [行2] (i) PA   21.166   21.170   -0.004     OK
+Table3                       [行2] (iii) NJ-PA   -0.138   -0.140    0.002     OK
+Table3                           [行3] (ii) NJ    0.588    0.590   -0.002     OK
+Table3                            [行3] (i) PA   -2.166   -2.160   -0.006     OK
+Table3                       [行3] (iii) NJ-PA    2.754    2.760   -0.006     OK
+Table3                           [行4] (ii) NJ    0.467    0.470   -0.003     OK
+Table3                            [行4] (i) PA   -2.283   -2.280   -0.003     OK
+Table3                       [行4] (iii) NJ-PA    2.750    2.750    0.000     OK
+Table3                       [行5] (iii) NJ-PA    2.509    2.510   -0.001     OK
+Table3                  [行4] (vi) wage>=$5.00   -2.157   -2.160    0.003     OK
+Table3                   [行4] (iv) wage=$4.25    1.205    1.210   -0.005     OK
+Table3                    [行4] (vii) low-high    3.361    3.360    0.002     OK
+Table3                   [行4] (viii) mid-high    2.867    2.870   -0.003     OK
+Table4                        (i) coefficient    2.326    2.330   -0.004     OK
+Table4                       (ii) coefficient    2.304    2.300    0.004     OK
+Table4                      (iii) coefficient   15.653   15.650    0.003     OK
+Table4                       (iv) coefficient   14.916   14.920   -0.004     OK
+Table4                        (v) coefficient   11.979   11.910    0.069     OK
+Table4                                      N  357.000  357.000    0.000     OK
+Table4                              mean(dep)   -0.237   -0.237   -0.001     OK
+Table4                                sd(dep)    8.825    8.825    0.001     OK
+Table5                     1. Base (NJ dummy)    2.304    2.300    0.004     OK
+Table5                          1. Base (Gap)   14.916   14.920   -0.004     OK
+Table5          2. Temp-closed = 0 (NJ dummy)    2.028    2.200   -0.172  CHECK
+Table5               2. Temp-closed = 0 (Gap)   14.424   14.420    0.004     OK
+Table5            3. Drop managers (NJ dummy)    2.342    2.270    0.072     OK
+Table5                 3. Drop managers (Gap)   14.690   14.690    0.000     OK
+Table5              4. PT = 0.4xFT (NJ dummy)    2.340    2.340   -0.000     OK
+Table5                   4. PT = 0.4xFT (Gap)   15.233   15.230    0.003     OK
+Table5              5. PT = 0.6xFT (NJ dummy)    2.268    2.270   -0.002     OK
+Table5                   5. PT = 0.6xFT (Gap)   14.598   14.600   -0.002     OK
+Table5            6. Drop NJ shore (NJ dummy)    2.585    2.580    0.005     OK
+Table5                 6. Drop NJ shore (Gap)   16.885   16.880    0.005     OK
+Table5            8. Drop >2 calls (NJ dummy)    2.419    2.410    0.009     OK
+Table5                 8. Drop >2 calls (Gap)   14.080   14.080   -0.000     OK
+Table5            1b. Prop. change (NJ dummy)    0.041    0.030    0.011     OK
+Table5                 1b. Prop. change (Gap)    0.253    0.340   -0.087     OK
+Table5   9. Weighted by init. emp. (NJ dummy)    0.104    0.130   -0.026     OK
+Table5        9. Weighted by init. emp. (Gap)    0.694    0.810   -0.116     OK
+Table5                      12. PA only (Gap)   -0.304   -0.300   -0.004     OK
+Table6  1. Fraction full-time workers (NJ-PA)    7.296    7.290    0.006     OK
+Table6      2. Hours open per weekday (NJ-PA)   -0.111   -0.110   -0.001     OK
+Table6    3. Number of cash registers (NJ-PA)   -0.174   -0.170   -0.004     OK
+Table6     4. Registers open at 11 AM (NJ-PA)    0.176    0.170    0.006     OK
+Table6      5. Low-price meal program (NJ-PA)   -3.391   -3.390   -0.001     OK
+Table6           6. Free meal program (NJ-PA)    2.001    2.000    0.001     OK
+Table6        7. Combination of meals (NJ-PA)    1.078    1.090   -0.012     OK
+Table6         8. Time to first raise (NJ-PA)    2.511    2.510    0.001     OK
+Table6       9. Amount of first raise (NJ-PA)    0.008    0.010   -0.002     OK
+Table6      10. Slope of wage profile (NJ-PA)    0.002   -0.010    0.011     OK
+Table7                        (i) coefficient    0.033    0.033   -0.001     OK
+Table7                       (ii) coefficient    0.037    0.037   -0.000     OK
+Table7                      (iii) coefficient    0.078    0.077    0.001     OK
+Table7                       (iv) coefficient    0.147    0.146    0.001     OK
+Table7                        (v) coefficient    0.066    0.063    0.003     OK
+Table7                                      N  317.000  315.000    2.000     OK
+Table7                              mean(dep)    0.017    0.017   -0.000     OK
+Table7                                sd(dep)    0.102    0.102    0.000     OK
+
+合计 92 项比对：OK = 91，需复核 CHECK = 1
+
+需复核的项目：
+ table                          item     mine    paper     diff  tolerance
+Table5 2. Temp-closed = 0 (NJ dummy)    2.028    2.200   -0.172      0.100
+
+比对明细 -> D:\MaoZihan_3036765448\outputs\tables\comparison_with_paper.csv
+
+========================================================================
+步骤 9. 数据不足、无法复现的论文内容
+========================================================================
+位置              内容                                          原因
+Table 1         抽样框 473 家门店与各轮回应率/拒访信息                      public.csv 只含 410 家成功受访门店，缺少未回应门店名单
+Table 5 行 10-11 Newark（070）与 Camden（080）三码邮编子样本             public.csv 无邮编字段，无法识别这两个子样本
+Table 8         各州麦当劳门店开设率（1986-1991）                       需各州麦当劳门店数、1986 CPS 零售业工资分布、各州 1990 最低工资，均不在数据包内
+第 VII 节         CPS 州级就业-人口比（NJ/PA/NY/US，1991-1992）         需 1991-1992 各月 CPS 原始微观数据，不在数据包内
+第 III-D 节 IV 检验 以收银机数作第一轮就业工具变量的工具变量回归                      NREGS/NREGS11 可用，可做；但论文未报告完整系数表，仅作说明性验证
+
+========================================================================
+复现完成。输出文件：
+  outputs/tables/comparison_with_paper.csv
+  outputs/tables/table2_means.csv
+  outputs/tables/table3_did.csv
+  outputs/tables/table4_employment_regressions.csv
+  outputs/tables/table5_robustness.csv
+  outputs/tables/table6_other_outcomes.csv
+  outputs/tables/table7_prices.csv
+  outputs/figures/figure1_wage_distribution.png
+  data/processed/cleaned_did.csv
+========================================================================

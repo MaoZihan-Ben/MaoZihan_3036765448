@@ -1,0 +1,93 @@
+table,item,mine,paper,diff,se_mine,se_paper,tolerance,status
+Table2,1. FTE employment (NJ),20.4394,20.4,0.0394,,,0.15,OK
+Table2,1. FTE employment (PA),23.3312,23.3,0.0312,,,0.15,OK
+Table2,2. FTE employment (NJ),21.0274,21.0,0.0274,,,0.15,OK
+Table2,2. FTE employment (PA),21.1656,21.2,-0.0344,,,0.15,OK
+Table2,1. Starting wage (NJ),4.6121,4.61,0.0021,,,0.15,OK
+Table2,1. Starting wage (PA),4.6301,4.63,0.0001,,,0.15,OK
+Table2,2. Starting wage (NJ),5.0808,5.08,0.0008,,,0.15,OK
+Table2,2. Starting wage (PA),4.6175,4.62,-0.0025,,,0.15,OK
+Table2,1. Price of full meal (NJ),3.3511,3.35,0.0011,,,0.15,OK
+Table2,1. Price of full meal (PA),3.0424,3.04,0.0024,,,0.15,OK
+Table2,2. Price of full meal (NJ),3.4148,3.41,0.0048,,,0.15,OK
+Table2,2. Price of full meal (PA),3.0266,3.03,-0.0034,,,0.15,OK
+Table2,1. Percentage full-time employees (NJ),32.8489,32.8,0.0489,,,0.15,OK
+Table2,1. Percentage full-time employees (PA),35.0378,35.0,0.0378,,,0.15,OK
+Table2,2. Percentage full-time employees (NJ),35.8656,35.9,-0.0344,,,0.15,OK
+Table2,2. Percentage full-time employees (PA),30.3848,30.4,-0.0152,,,0.15,OK
+Table2,1. Hours open (weekday) (NJ),14.4184,14.4,0.0184,,,0.15,OK
+Table2,1. Hours open (weekday) (PA),14.5253,14.5,0.0253,,,0.15,OK
+Table2,2. Hours open (weekday) (NJ),14.4198,14.4,0.0198,,,0.15,OK
+Table2,2. Hours open (weekday) (PA),14.6538,14.7,-0.0462,,,0.15,OK
+Table2,1. Recruiting bonus (NJ),23.565,23.6,-0.035,,,0.15,OK
+Table2,1. Recruiting bonus (PA),29.1139,29.1,0.0139,,,0.15,OK
+Table2,2. Recruiting bonus (NJ),20.3175,20.3,0.0175,,,0.15,OK
+Table2,2. Recruiting bonus (PA),23.3766,23.4,-0.0234,,,0.15,OK
+Table2,1. Wage = $4.25 (%) (NJ),30.5136,30.5,0.0136,,,0.5,OK
+Table2,1. Wage = $4.25 (%) (PA),32.9114,32.9,0.0114,,,0.5,OK
+Table2,2. Wage = $4.25 (%) (NJ),0.0,0.0,0.0,,,0.5,OK
+Table2,2. Wage = $4.25 (%) (PA),25.3165,25.3,0.0165,,,0.5,OK
+Table2,2. Wage = $5.05 (%) (NJ),85.4985,85.2,0.2985,,,0.5,OK
+Table2,2. Wage = $5.05 (%) (PA),1.2658,1.3,-0.0342,,,0.5,OK
+Table3,[行1] (ii) NJ,20.4394,20.44,-0.0006,,,0.05,OK
+Table3,[行1] (i) PA,23.3312,23.33,0.0012,,,0.05,OK
+Table3,[行1] (iii) NJ-PA,-2.8918,-2.89,-0.0018,,,0.05,OK
+Table3,[行2] (ii) NJ,21.0274,21.03,-0.0026,,,0.05,OK
+Table3,[行2] (i) PA,21.1656,21.17,-0.0044,,,0.05,OK
+Table3,[行2] (iii) NJ-PA,-0.1382,-0.14,0.0018,,,0.05,OK
+Table3,[行3] (ii) NJ,0.588,0.59,-0.002,,,0.05,OK
+Table3,[行3] (i) PA,-2.1656,-2.16,-0.0056,,,0.05,OK
+Table3,[行3] (iii) NJ-PA,2.7536,2.76,-0.0064,,,0.05,OK
+Table3,[行4] (ii) NJ,0.4667,0.47,-0.0033,,,0.05,OK
+Table3,[行4] (i) PA,-2.2833,-2.28,-0.0033,,,0.05,OK
+Table3,[行4] (iii) NJ-PA,2.75,2.75,0.0,,,0.05,OK
+Table3,[行5] (iii) NJ-PA,2.5092,2.51,-0.0008,,,0.05,OK
+Table3,[行4] (vi) wage>=$5.00,-2.1567,-2.16,0.0033,,,0.05,OK
+Table3,[行4] (iv) wage=$4.25,1.2048,1.21,-0.0052,,,0.05,OK
+Table3,[行4] (vii) low-high,3.3615,3.36,0.0015,,,0.05,OK
+Table3,[行4] (viii) mid-high,2.8666,2.87,-0.0034,,,0.05,OK
+Table4,(i) coefficient,2.3258,2.33,-0.0042,1.1916,1.19,0.1,OK
+Table4,(ii) coefficient,2.3039,2.3,0.0039,1.1955,1.2,0.1,OK
+Table4,(iii) coefficient,15.6529,15.65,0.0029,6.0802,6.08,0.1,OK
+Table4,(iv) coefficient,14.9157,14.92,-0.0043,6.2053,6.21,0.1,OK
+Table4,(v) coefficient,11.9792,11.91,0.0692,7.4191,7.39,0.1,OK
+Table4,N,357.0,357.0,0.0,,,1.0,OK
+Table4,mean(dep),-0.2375,-0.237,-0.0005,,,0.02,OK
+Table4,sd(dep),8.8255,8.825,0.0005,,,0.05,OK
+Table5,1. Base (NJ dummy),2.3039,2.3,0.0039,1.1955,1.19,0.1,OK
+Table5,1. Base (Gap),14.9157,14.92,-0.0043,6.2053,6.21,0.1,OK
+Table5,2. Temp-closed = 0 (NJ dummy),2.0279,2.2,-0.1721,1.219,1.21,0.1,CHECK
+Table5,2. Temp-closed = 0 (Gap),14.4237,14.42,0.0037,6.3122,6.31,0.1,OK
+Table5,3. Drop managers (NJ dummy),2.3421,2.27,0.0721,1.1659,1.17,0.1,OK
+Table5,3. Drop managers (Gap),14.6903,14.69,0.0003,6.0532,6.05,0.1,OK
+Table5,4. PT = 0.4xFT (NJ dummy),2.3399,2.34,-0.0001,1.2005,1.2,0.1,OK
+Table5,4. PT = 0.4xFT (Gap),15.2332,15.23,0.0032,6.23,6.23,0.1,OK
+Table5,5. PT = 0.6xFT (NJ dummy),2.2678,2.27,-0.0022,1.2065,1.21,0.1,OK
+Table5,5. PT = 0.6xFT (Gap),14.5981,14.6,-0.0019,6.2638,6.26,0.1,OK
+Table5,6. Drop NJ shore (NJ dummy),2.5851,2.58,0.0051,1.1953,1.19,0.1,OK
+Table5,6. Drop NJ shore (Gap),16.885,16.88,0.005,6.3674,6.36,0.1,OK
+Table5,8. Drop >2 calls (NJ dummy),2.4189,2.41,0.0089,1.2861,1.28,0.1,OK
+Table5,8. Drop >2 calls (Gap),14.08,14.08,-0.0,7.1115,7.11,0.1,OK
+Table5,1b. Prop. change (NJ dummy),0.0407,0.03,0.0107,0.0581,0.05,0.15,OK
+Table5,1b. Prop. change (Gap),0.2531,0.34,-0.0869,0.3024,0.26,0.15,OK
+Table5,9. Weighted by init. emp. (NJ dummy),0.1038,0.13,-0.0262,0.0513,0.05,0.15,OK
+Table5,9. Weighted by init. emp. (Gap),0.6938,0.81,-0.1162,0.2764,0.26,0.15,OK
+Table5,12. PA only (Gap),-0.3044,-0.3,-0.0044,22.0034,22.0,0.1,OK
+Table6,1. Fraction full-time workers (NJ-PA),7.2959,7.29,0.0059,,,0.2,OK
+Table6,2. Hours open per weekday (NJ-PA),-0.1113,-0.11,-0.0013,,,0.2,OK
+Table6,3. Number of cash registers (NJ-PA),-0.1741,-0.17,-0.0041,,,0.2,OK
+Table6,4. Registers open at 11 AM (NJ-PA),0.1759,0.17,0.0059,,,0.2,OK
+Table6,5. Low-price meal program (NJ-PA),-3.3908,-3.39,-0.0008,,,0.2,OK
+Table6,6. Free meal program (NJ-PA),2.001,2.0,0.001,,,0.2,OK
+Table6,7. Combination of meals (NJ-PA),1.0784,1.09,-0.0116,,,0.2,OK
+Table6,8. Time to first raise (NJ-PA),2.5107,2.51,0.0007,,,0.2,OK
+Table6,9. Amount of first raise (NJ-PA),0.0077,0.01,-0.0023,,,0.2,OK
+Table6,10. Slope of wage profile (NJ-PA),0.0015,-0.01,0.0115,,,0.2,OK
+Table7,(i) coefficient,0.0325,0.033,-0.0005,0.0144,0.014,0.02,OK
+Table7,(ii) coefficient,0.0367,0.037,-0.0003,0.014,0.014,0.02,OK
+Table7,(iii) coefficient,0.0778,0.077,0.0008,0.0748,0.075,0.02,OK
+Table7,(iv) coefficient,0.147,0.146,0.001,0.074,0.074,0.02,OK
+Table7,(v) coefficient,0.0659,0.063,0.0029,0.0893,0.089,0.02,OK
+Table7,N,317.0,315.0,2.0,,,3.0,OK
+Table7,mean(dep),0.0172,0.0173,-0.0001,,,0.002,OK
+Table7,sd(dep),0.1018,0.1017,0.0001,,,0.002,OK
